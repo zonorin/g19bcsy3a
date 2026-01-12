@@ -1,15 +1,8 @@
-<?php 
-    include '../includes/header.inc.php';
-    include '../includes/nav.inc.php';
-?>
-
-    
-
-    <form>
+   <form>
         <div class="col-md-8 col-lg-6 mx-auto">
-            <h3>Login Form</h3>
+            <h3>Login Page</h3>
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <label for="exampleInputEmail1" class="form-label">Username</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
@@ -20,9 +13,3 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
-
-
-
-<?php
-    include "../includes/footer.inc.php";
-?>
