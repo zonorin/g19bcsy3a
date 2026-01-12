@@ -17,15 +17,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Auth
+                            Authentication
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="./login.php">Login</a></li>
                             <li><a class="dropdown-item" href="./register.php">Register</a></li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
