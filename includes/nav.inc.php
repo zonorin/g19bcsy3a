@@ -20,7 +20,7 @@
                             Authentication
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="./login.php">Login</a></li>
+                            <li><a class="dropdown-item" href="./login">Login</a></li>
                             <li><a class="dropdown-item" href="./register.php">Register</a></li>
                         </ul>
                     </li>
