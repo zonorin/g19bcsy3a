@@ -5,10 +5,10 @@ $name = $username = '';
 
 // if username isset then echo username from post
 if (isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_POST['confirmPasswd'])) {
-    $name = $_POST['name'];
-    $username = $_POST['username'];
-    $passwd = $_POST['passwd'];
-    $confirmPasswd = $_POST['confirmPasswd'];
+    $name           = trim($_POST['name']);
+    $username       = trim($_POST['username']);
+    $passwd         = trim($_POST['passwd']);
+    $confirmPasswd  = trim($_POST['confirmPasswd']);
 
     if (empty($name)) {
         $nameErr = 'please input name!';
@@ -19,6 +19,35 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_POST['confirmP
     if (empty($passwd)) {
         $passwdErr = 'please input password!';
     }
+
+    // // string length check
+    // if(strlen($passwd) < 25 || strlen($passwd) > 8) {
+    //     $passwdErr = 'password must be between 8 and 25 characters!';
+    // }
+
+    if ($passwd !== $confirmPasswd) {
+        $passwdErr = 'password does not match!';
+    }
+
+    if (username_exists($username)) {
+        $usernameErr = 'username already exists!';
+    }
+    
+    if (empty($nameERr) && empty($usernameerr) && empty($passwdErr)) {
+        if (register_user($name, $username, $passwd)) {
+            $name = $username = '';
+            echo '<div class="alert alert-success" role="alert">
+                       Registration successful! Please <a href="./?page=login" class="alert-link">login here</a>.
+                  </div>';
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                       Registration failed. Please try again.
+                  </div>';
+        }
+
+    }
+
+
 }
 ?>
 
