@@ -1,6 +1,6 @@
 <?php
 // empty string
-$nameErr = $usernameErr = '';
+$nameErr = $usernameErr = $passwdErr = '';
 $name = $username = '';
 
 // if username isset then echo username from post

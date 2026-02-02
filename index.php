@@ -1,27 +1,35 @@
 <?php 
     require_once './init/init.php';
 
+    $user = loggedInUser();
+
     include './includes/header.inc.php';
     include './includes/nav.inc.php';
 
-    $available_pages = ['login', 'register'];
 
-    // echo $_GET['page'];
-    // include './pages/' . $_GET['page'] . '.php';
-    if (isset($_GET['page'])) {
+    $available_pages     = ['login', 'register', 'logout', 'dashboard'];
+    $logged_in_pages     = ['dashboard'];
+    $non_logged_in_pages = ['login', 'register'];
 
-        $page = $_GET['page'];
 
-        if (in_array($page, $available_pages)) {
-            include './pages/' . $page . '.php';
-        } else {
-            echo '<h1>Error 404</h1>';
-        }
-        
+    $page = ''; 
+    if(isset($_GET['page'])) {
+        $page = $_GET['page']; // dashboard
+    }
+
+    if(in_array($page, $logged_in_pages) && empty($user)) {
+        header('Location: ./?page=login');
+    }
+
+    if(in_array($page, $non_logged_in_pages) && !empty($user)) {
+        header('Location: ./?page=dashboard');
+    }
+
+    if(in_array($page, $available_pages)) {
+        include './pages/' . $page . '.php';
     } else {
-        echo '<h1>Welcome to the Home Page</h1>';
+        header('Location: ./?page=dashboard');
     }
 
 
     include "./includes/footer.inc.php";
-?>
