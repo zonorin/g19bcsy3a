@@ -52,7 +52,7 @@ function loggedInUser()
         return null;
     }
     $user_id = $_SESSION['user_id'];
-    $query = $db -> prepare('SELECT * FROM tbl_users WHERE id = ?');
+    $query = $db -> prepare('SELECT * FROM tbl_users WHERE id = ?');  // select id, name, username, level from tbl_users where id = ?
     $query -> bind_param('d', $user_id);
     $query -> execute();
     $result = $query -> get_result();
@@ -61,6 +61,49 @@ function loggedInUser()
     }
     return null;
 }
+
+
+function isAdmin() {
+    $user = loggedInUser();
+    if ($user && $user->level === 'admin') {
+        return true;
+    }
+    return false;
+}
+
+
+function isUserHasPassword($passwd) {
+    global $db;
+    $user = loggedInUser();
+    $query = $db -> prepare(
+        'SELECT * FROM tbl_users WHERE id = ? AND passwd = ?'
+    );
+    $query -> bind_param('ss', $user->id, $passwd);
+    $query -> execute();
+    $result = $query -> get_result();
+    if ($result -> num_rows) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function setUserNewPassword($passwd) 
+{
+    global $db;
+    $user = loggedInUser();
+    $query = $db -> prepare(
+        'UPDATE tbl_users SET passwd = ? WHERE id = ?'
+    );
+    $query -> bind_param('ss', $passwd, $user->id);
+    $query -> execute();
+    if ($db -> affected_rows) {
+        return true;
+    }
+        return false;
+}
+
 
 
 
