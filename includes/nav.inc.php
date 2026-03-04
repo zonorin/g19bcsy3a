@@ -20,7 +20,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        Auth
+                        <?php echo (!loggedInUser() ? 'Account' : loggedInUser()->name) ?>
                     </a>
                     <ul class="dropdown-menu">
                         <?php if (empty($user)) { ?>
