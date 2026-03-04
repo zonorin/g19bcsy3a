@@ -1,15 +1,17 @@
 <?php 
     require_once './init/init.php';
 
-    $user = loggedInUser();
+    $isAdmin = isAdmin();
+    $user    = loggedInUser();
 
     include './includes/header.inc.php';
     include './includes/nav.inc.php';
 
 
-    $available_pages     = ['login', 'register', 'logout', 'dashboard', 'profile'];
+    $available_pages     = ['login', 'register', 'logout', 'dashboard', 'profile', 'user/list', 'user/create'];
     $logged_in_pages     = ['dashboard', 'profile'];
     $non_logged_in_pages = ['login', 'register'];
+    $admin_pages         = ['user/create', 'user/list'];
 
 
     $page = ''; 
@@ -26,6 +28,10 @@
     }
 
     if(in_array($page, $available_pages)) {
+        if (in_array($page, $admin_pages) && !$isAdmin) {
+            header('Location: ./?page=dashboard');
+        }
+
         include './pages/' . $page . '.php';
     } else {
         header('Location: ./?page=dashboard');

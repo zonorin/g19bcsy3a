@@ -32,23 +32,54 @@
                 </div>';
             }
         }
-    }    
+    } 
+    
+    if (isset($_POST['uploadPhoto']) && isset($_FILES['photo'])) {
+        $photo = $_FILES['photo'];
+        if (empty($photo['name'])) {
+            echo    '<div class="alert alert-danger" role="alert">
+                    Please select a photo to upload!
+                    </div>';
+        } else {
+            try {
+                if (changeProfileImage($photo)) {
+                    echo    '<div class="alert alert-success" role="alert">
+                            Profile photo updated successfully!
+                            </div>';
+                } else {
+                    echo    '<div class="alert alert-danger" role="alert">
+                            Failed to update profile photo, please try again!
+                            </div>';
+                }
+            } catch (Exception $e) {
+                echo '<div class="alert alert-danger" role="alert">
+                ' . $e->getMessage() . '
+                    </div>';
+            }
+        }
+    }
+
+
+    if (isset($_POST['deletePhoto'])) {
+        deleteProfileImage();
+    }
 ?>
 
 
 
 <div class="row">
     <div class="col-6">
-        <form method="post" action="./?page=profile">
+        <form method="post" action="./?page=profile" enctype="multipart/form-data">
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
-                    <img src="./assets/images/emptyuser.png" width="200" class="rounded-circle mt-3" alt="Profile Photo">
+                    <img src="<?php echo loggedInUser()->photo ?? './assets/images/emptyuser.png' ?>"
+                    class="rounded-circle mt-3" alt="Profile Photo" style="max-width: 200px;">
                 </label>
             </div>
             <div class="d-flex justify-content-center gap-2 mt-3">
                 <button type="submit" name="deletePhoto" class="btn btn-danger">Delete  </button>
-                <button type="submit" name="uploadPhoto" class="btn btn-success">Upload </button>
+                <button type="submit" name="uploadPhoto" class="btn btn-outline-success">Upload </button>
             </div>
         </form>
     </div>
