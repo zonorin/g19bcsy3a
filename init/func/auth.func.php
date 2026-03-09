@@ -65,7 +65,7 @@ function loggedInUser()
 
 function isAdmin() {
     $user = loggedInUser();
-    if ($user && $user->level === 'admin') {
+    if ($user && $user->level === 'Admin') {
         return true;
     }
     return false;

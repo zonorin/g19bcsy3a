@@ -8,10 +8,25 @@
     include './includes/nav.inc.php';
 
 
-    $available_pages     = ['login', 'register', 'logout', 'dashboard', 'profile', 'user/list', 'user/create'];
+    $available_pages     = ['login', 'register', 'logout', 'dashboard', 'profile',
+                            'user/list', 
+                            'user/create', 
+                            'user/update', 
+                            'user/delete',
+                            'category/list', 
+                            'category/create', 
+                            'category/update', 
+                            'category/delete'];
     $logged_in_pages     = ['dashboard', 'profile'];
     $non_logged_in_pages = ['login', 'register'];
-    $admin_pages         = ['user/create', 'user/list'];
+    $admin_pages         = ['user/list', 
+                            'user/create', 
+                            'user/update', 
+                            'user/delete',
+                            'category/list', 
+                            'category/create', 
+                            'category/update', 
+                            'category/delete'];
 
 
     $page = ''; 
