@@ -5,7 +5,7 @@
     $user    = loggedInUser();
 
     include './includes/header.inc.php';
-    include './includes/nav.inc.php';
+    include './includes/navbar.inc.php';
 
 
     $available_pages     = ['login', 'register', 'logout', 'dashboard', 'profile',

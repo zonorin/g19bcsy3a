@@ -11,3 +11,4 @@ require_once './init/func/auth.func.php';
 
 // manage user
 require_once './init/func/manage/user.manage.php';
+require_once './init/func/manage/category.manage.php';

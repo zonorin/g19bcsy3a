@@ -1,7 +1,7 @@
 <?php
 // empty string
-$nameErr = $usernameErr = $passwdErr = '';
-$name = $username = '';
+$nameErr = $slugErr = $passwdErr = '';
+$name = $slug = '';
 
 if (isset($_GET['success'])) {
     echo '<div class="alert alert-success" role="alert">
@@ -9,37 +9,39 @@ if (isset($_GET['success'])) {
           </div>';
 }
 
-if (isset($_POST['name'], $_POST['username'], $_POST['passwd'])) {
-    $photo      = $_FILES['photo'] ?? null;
+if (isset($_POST['name'], $_POST['slug'])) {
     $name       = trim($_POST['name']);
-    $username   = trim($_POST['username']);
-    $passwd     = trim($_POST['passwd']);
+    $slug       = trim($_POST['slug']);
 
-    if (empty($name))
-        $nameErr = 'Please input name!';
-    if (empty($username))
-        $usernameErr = 'Please input username!';
-    if (empty($passwd))
-        $passwdErr = 'Please input password!';
-    if (username_exists($username)) {
-        $usernameErr = 'Username already exists!';
+    if (empty($name)){
+        $nameErr = 'Name is required!';
+    }
+    
+    if (empty($slug)){
+        $slugErr = 'Slug is required!';
+    }
+    
+    if (categorySlugExists($slug)) {
+        $slugErr = 'Slug already exists!';
     }
 
-    if (empty($nameErr) && empty($usernameErr) && empty($passwdErr)) {
+    if (empty($nameErr) && empty($slugErr)) {
         try {
-            if (createUser($name, $username, $passwd, $photo)) {
-                $name = $username = '';
+            if (createCategory($name, $slug)) {
                 echo '<div class="alert alert-success" role="alert">
-                  Create successful! <a href="./?page=user/list" class="alert-link">View Users</a>
+                  Category Create successful! <a href="./?page=category/list" class="alert-link">View Category</a>
                   </div>';
+                $name = $slug = '';
+                unset($_POST['name'], $_POST['slug']);
+
             } else {
                 echo '<div class="alert alert-danger" role="alert">
-                       Create failed. Please try again.
+                       Category Create failed. Please try again.
                   </div>';
             }
         } catch (Exception $e) {
             echo '<div class="alert alert-danger" role="alert">
-                    ' . $e->getMessage() . '
+                    Category Create Failded!
                   </div>';
         }
     }
@@ -47,38 +49,24 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd'])) {
 ?>
 
 
-<form method="post" action="./?page=user/create" enctype="multipart/form-data" class="col-md-8 col-lg-6 mx-auto">
-    <h3>Create User</h3>
-    <div class="d-flex justify-content-center">
-        <input name="photo" type="file" id="profileUpload" hidden>
-        <label role="button" for="profileUpload">
-            <img src="<?php echo loggedInUser()->photo ?? './assets/images/emptyuser.png' ?>"
-                class="rounded-circle mt-3" alt="Profile Photo" style="max-width: 200px;">
-        </label>
-    </div>
+<form method="post" action="./?page=category/create" enctype="multipart/form-data" class="col-md-8 col-lg-6 mx-auto">
+    <h3>Create Category</h3>
     <div class="mb-3">
-        <label class="form-label">Name</label>
+        <label for="name" class="form-label">Name</label>
         <input name="name" value="<?php echo $name ?>" type="text" class="form-control 
                 <?php echo empty($nameErr) ? '' : "is-invalid" ?>">
         <div class="invalid-feedback"><?php echo $nameErr ?></div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Username</label>
-        <input name="username" value="<?php echo $username ?>" type="text" class="form-control
-                <?php echo empty($usernameErr) ? '' : 'is-invalid' ?>">
-        <div class="invalid-feedback"><?php echo $usernameErr ?></div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input name="passwd" type="password" class="form-control
-        <?php echo empty($passwdErr) ? '' : 'is-invalid' ?>">
-        <div class="invalid-feedback"><?php echo $passwdErr ?></div>
+        <label for="slug" class="form-label">Slug</label>
+        <input name="slug" value="<?php echo $slug ?>" type="text" class="form-control
+                <?php echo empty($slugErr) ? '' : 'is-invalid' ?>">
+        <div class="invalid-feedback"><?php echo $slugErr ?></div>
     </div>
 
     <div class="d-flex justify-content-end gap-2">
-        <a href="./?page=user/list" role="submit" class="btn btn-danger">Cancel</a>
+        <a href="./?page=category/list" role="submit" class="btn btn-danger">Cancel</a>
         <button type="submit" class="btn btn-success">CREATE</button>
     </div>
 

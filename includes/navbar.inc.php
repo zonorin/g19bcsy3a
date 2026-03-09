@@ -22,6 +22,7 @@ $user = loggedInUser();
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=user/list">User Account</a>
+                                <a class="dropdown-item" href="<?php echo $baseUrl; ?>?page=category/list">Category Page</a>
                             </li>
 
                             <!-- <li>
