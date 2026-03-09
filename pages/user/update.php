@@ -24,17 +24,22 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd']) && isset($_FILES
     }
 
     if (empty($nameErr) && empty($usernameErr)) {
-        if (updateUser($id, $name, $username, $passwd, $photo)) {
-            echo '<div class="alert alert-success" role="alert">
-                  Update successful! <a href="./?page=user/list" class="alert-link">View Users</a>
-                  </div>';
-
-        } else {
+        try {
+            if (updateUser($id, $name, $username, $passwd, $photo)) {
+                $manage_user = getUserById($id); // refresh data after update
+                echo '<div class="alert alert-success" role="alert">
+                      Update successful! <a href="./?page=user/list" class="alert-link">View Users</a>
+                      </div>';
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                           Update failed. Please try again.
+                      </div>';
+            }
+        } catch (Exception $e) {
             echo '<div class="alert alert-danger" role="alert">
-                       Update failed. Please try again.
+                  ' . $e->getMessage() . '
                   </div>';
         }
-
     }
 }
 ?>
@@ -44,7 +49,7 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd']) && isset($_FILES
     <div class="d-flex justify-content-center">
         <input name="photo" type="file" id="profileUpload" hidden>
         <label role="button" for="profileUpload">
-            <img src="<?php echo loggedInUser()->photo ?? './assets/images/emptyuser.png' ?>"
+            <img src="<?php echo !empty($manage_user->photo) ? $manage_user->photo : './assets/images/emptyuser.png' ?>"
                 class="rounded-circle mt-3" alt="Profile Photo" style="max-width: 200px;">
         </label>
     </div>
@@ -57,7 +62,7 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd']) && isset($_FILES
 
     <div class="mb-3">
         <label class="form-label">Username</label>
-        <input name="username" placeholder="(optional) input username to update" value="<?php echo isset($_POST['name']) ? $_POST['name'] : '' ?>" type="text" class="form-control
+        <input name="username" placeholder="(optional) input username to update" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>" type="text" class="form-control
                 <?php echo empty($usernameErr) ? '' : 'is-invalid' ?>">
         <div class="invalid-feedback"><?php echo $usernameErr ?></div>
     </div>

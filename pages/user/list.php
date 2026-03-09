@@ -10,8 +10,9 @@
             <table class="table table-hover">
                 <tr>
                     <th>ID</th>
-                    <th>User Label</th>
-                    <th>Level</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <!-- <th>Level</th> -->
                     <th>Action</th>
                 </tr>
 
@@ -36,8 +37,12 @@
 
                         <tr>
                             <td><?php echo $row->id ?></td>
+                            <td>
+                                <img src="<?php echo !empty($row->photo) ? $row->photo : './assets/images/emptyuser.png' ?>" alt="User Photo" 
+                                class="rounded-circle" style="max-width: 50px;">
+                            </td>
                             <td><?php echo $row->name ?></td>
-                            <td><?php echo $row->level ?></td>
+                            <!-- <td><?php echo $row->level ?></td> -->
                             <td>
                                 <a class="btn btn-primary" href="./?page=user/update&id=<?php echo $row->id ?>">Update</a>
                                 <a class="btn btn-danger"  href="./?page=user/delete&id=<?php echo $row->id ?>">Delete</a>

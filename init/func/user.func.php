@@ -8,10 +8,10 @@
             $image_path = uploadImage($photo);
         }
 
-        // (?, ?, ?, ?) project database enjection
         $query = $db -> prepare('INSERT INTO tbl_users (name, username, passwd, photo) VALUES (?, ?, ?, ?)');
         $query -> bind_param('ssss', $name, $username, $passwd, $image_path);
         $query -> execute();
+        
         if($db -> affected_rows) {
             return true;
         }

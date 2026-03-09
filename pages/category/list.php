@@ -5,7 +5,7 @@
             <a href="./?page=user/create" class="btn btn-sm btn-success">CREATE USER</a>
         </div>
     </div>
-    <div class="card">
+    <div class="card table-responsive">
         <div class="card-body">
             <table class="table table-hover">
                 <tr>

@@ -1,0 +1,5 @@
+# Uploaded images
+assets/images/*
+
+# Keep the default placeholder image
+!assets/images/emptyuser.png

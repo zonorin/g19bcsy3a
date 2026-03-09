@@ -10,10 +10,10 @@ if (isset($_GET['success'])) {
 }
 
 if (isset($_POST['name'], $_POST['username'], $_POST['passwd'])) {
-    $photo = $_FILES['photo'] ?? null;
-    $name = trim($_POST['name']);
-    $username = trim($_POST['username']);
-    $passwd = trim($_POST['passwd']);
+    $photo      = $_FILES['photo'] ?? null;
+    $name       = trim($_POST['name']);
+    $username   = trim($_POST['username']);
+    $passwd     = trim($_POST['passwd']);
 
     if (empty($name))
         $nameErr = 'Please input name!';
@@ -21,34 +21,28 @@ if (isset($_POST['name'], $_POST['username'], $_POST['passwd'])) {
         $usernameErr = 'Please input username!';
     if (empty($passwd))
         $passwdErr = 'Please input password!';
-
-
     if (username_exists($username)) {
         $usernameErr = 'Username already exists!';
     }
 
     if (empty($nameErr) && empty($usernameErr) && empty($passwdErr)) {
-        if (createUser($name, $username, $passwd, $photo)) {
-            echo '<div class="alert alert-success" role="alert">
+        try {
+            if (createUser($name, $username, $passwd, $photo)) {
+                $name = $username = '';
+                echo '<div class="alert alert-success" role="alert">
                   Create successful! <a href="./?page=user/list" class="alert-link">View Users</a>
                   </div>';
-            $nameErr = $usernameErr = $passwdErr = '';
-
-            $name = $username = '';
-
-            unset($_POST['name']);
-            unset($_POST['username']);
-            unset($_POST['passwd']);
-
-        } else {
-            echo '<div class="alert alert-danger" role="alert">
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
                        Create failed. Please try again.
                   </div>';
+            }
+        } catch (Exception $e) {
+            echo '<div class="alert alert-danger" role="alert">
+                    ' . $e->getMessage() . '
+                  </div>';
         }
-
     }
-
-
 }
 ?>
 

@@ -19,8 +19,11 @@ function username_exists($username)
 function register_user($name, $username, $passwd) 
 {
     global $db;
+
+    $passwd_hashed = password_hash($passwd, PASSWORD_DEFAULT);
+
     $query = $db -> prepare('INSERT INTO tbl_users (name, username, passwd) VALUES (?, ?, ?)');
-    $query -> bind_param('sss', $name, $username, $passwd);
+    $query -> bind_param('sss', $name, $username, $passwd_hashed);
     $query -> execute();
     if($db -> affected_rows) {
         return true;
@@ -75,6 +78,10 @@ function isAdmin() {
 function isUserHasPassword($passwd) {
     global $db;
     $user = loggedInUser();
+    if (!$user) {
+        return false;
+    }
+
     $query = $db -> prepare(
         'SELECT * FROM tbl_users WHERE id = ? AND passwd = ?'
     );
@@ -93,6 +100,9 @@ function setUserNewPassword($passwd)
 {
     global $db;
     $user = loggedInUser();
+    if (!$user) {
+        return false;
+    }
     $query = $db -> prepare(
         'UPDATE tbl_users SET passwd = ? WHERE id = ?'
     );
@@ -109,6 +119,9 @@ function changeProfileImage($image)
 {
     global $db;
     $user = loggedInUser();
+    if (!$user) {
+        return false;
+    }
     $image_path = uploadImage($image);
     if ($image_path && $user->photo) {
         unlink($user->photo);
@@ -130,6 +143,9 @@ function deleteProfileImage()
 {
     global $db;
     $user = loggedInUser();
+    if (!$user) {
+        return false;
+    }
     if ($user->photo) {
         unlink($user->photo);
     }
@@ -149,24 +165,25 @@ function uploadImage($image)
     $img_name = $image['name'];
     $img_size = $image['size'];
     $tmp_name = $image['tmp_name'];
-    $error = $image['error'];
+    $error    = $image['error'];
 
     $dir = './assets/images/';
 
     $allow_exs = ['jpg', 'jpeg', 'png', 'gif'];
-    $image_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+    $image_ex  = pathinfo($img_name, PATHINFO_EXTENSION);
     $image_lowercase_ex = strtolower($image_ex);
 
+    $max_size = 5 * 1024 * 1024; // 5MB
+    if ($img_size > $max_size) {
+        throw new Exception('File size is too large! Maximum size is 5MB.');
+    }
+
     if (!in_array($image_lowercase_ex, $allow_exs)) {
-        throw new Exception('File extension is not allowed!');
+        throw new Exception('File extension is not allowed! Only JPG, JPEG, PNG are accepted.');
     }
 
     if ($error !== 0) {
-        throw new Exception('Unknow error occurred while uploading!');
-    }
-
-    if ($img_size > 5000000) {
-        throw new Exception('File size is too large!');
+        throw new Exception('Unknown error occurred while uploading!');
     }
 
     $new_img_name = uniqid('PI-') . '.' . $image_lowercase_ex;
@@ -174,6 +191,9 @@ function uploadImage($image)
     move_uploaded_file($tmp_name, $image_path);
     return $image_path;
 }
+
+
+
 
 
 
