@@ -1,14 +1,7 @@
 <?php
 // empty string
-$nameErr = $slugErr = $passwdErr = '';
+$nameErr = $slugErr = '';
 $name = $slug = '';
-
-if (isset($_GET['success'])) {
-    echo '<div class="alert alert-success" role="alert">
-               Create successful!
-          </div>';
-}
-
 if (isset($_POST['name'], $_POST['slug'])) {
     $name       = trim($_POST['name']);
     $slug       = trim($_POST['slug']);

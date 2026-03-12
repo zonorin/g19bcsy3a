@@ -1,17 +1,17 @@
 <?php
 
-if (!isset($_GET['id']) || getUserById($_GET['id']) === null) {
-    header('Location: ./?page=user/list');
+if (!isset($_GET['id']) || getCategoryById($_GET['id']) === null) {
+    header('Location: ./?page=category/list');
     exit;
 }
 
-if (deleteUser($_GET['id'])) {
+if (deleteCategory($_GET['id'])) {
     echo '<div class="alert alert-success" role="alert">
-          User deleted successfully! <a href="./?page=user/list" class="alert-link">View Users</a>
+          Category deleted successfully! <a href="./?page=category/list" class="alert-link">View Category</a>
           </div>';
 } else {
     echo '<div class="alert alert-danger" role="alert">
-          Failed to delete user. Please try again.
+          Failed to delete category. Please try again. <a href="./?page=category/list" class="alert-link">View Category</a>
           </div>';
 }
 

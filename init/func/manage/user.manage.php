@@ -22,14 +22,14 @@ function getUsers()
 }
 
 function getUserById($id)
-    {
-        global $db;
-        $query = $db->query("SELECT id, name, level, photo FROM tbl_users WHERE id = '$id' AND level = 'User'"); // or level <> 'Admin' depending on your user level system
-        if ($query->num_rows) {
-            return $query->fetch_object();
-        }
-        return null;
+{
+    global $db;
+    $query = $db->query("SELECT id, name, level, photo FROM tbl_users WHERE id = '$id' AND level = 'User'"); // or level <> 'Admin' depending on your user level system
+    if ($query->num_rows) {
+        return $query->fetch_object();
     }
+    return null;
+}
 
 function updateUser($id, $name, $username, $passwd, $photo = null)
 {

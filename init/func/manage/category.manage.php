@@ -1,13 +1,13 @@
 <?php
-function categorySlugExists($slug) 
+function categorySlugExists($slug)
 {
 
     global $db;
-    $query = $db -> prepare("SELECT id_category FROM tbl_category WHERE slug = '$slug'");
-    $query -> execute();
-    $result = $query -> get_result();
+    $query = $db->prepare("SELECT id_category FROM tbl_category WHERE slug = '$slug'");
+    $query->execute();
+    $result = $query->get_result();
 
-    if ($result -> num_rows) {
+    if ($result->num_rows) {
         return true;
     }
     return false;
@@ -25,13 +25,43 @@ function getCategories()
     return null;
 }
 
-function createCategory($name, $slug) 
-    {
-        global $db;
+function createCategory($name, $slug)
+{
+    global $db;
 
-        $query = $db -> prepare("INSERT INTO tbl_category (name, slug) VALUES ('$name', '$slug')");
-        if($query -> execute()) {
-            return true;
-        }
-        return false;
+    $query = $db->prepare("INSERT INTO tbl_category (name, slug) VALUES ('$name', '$slug')");
+    if ($query->execute()) {
+        return true;
     }
+    return false;
+}
+
+function getCategoryById($id)
+{
+    global $db;
+    $query = $db->query("SELECT * FROM tbl_category WHERE id_category = '$id'"); // or level <> 'Admin' depending on your user level system
+    if ($query->num_rows) {
+        return $query->fetch_object();
+    }
+    return null;
+}
+
+function updateCategory($id, $name, $slug)
+{
+    global $db;
+    $db->query("UPDATE tbl_category SET name = '$name', slug = '$slug' WHERE id_category = '$id'");
+    if ($db->affected_rows) {
+        return true;
+    }
+    return false;
+}
+
+function deleteCategory($id)
+{
+    global $db;
+    $db->query("DELETE FROM tbl_category WHERE id_category = '$id'");
+    if ($db->affected_rows) {
+        return true;
+    }
+    return false;
+}
